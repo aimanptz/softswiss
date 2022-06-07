@@ -54,7 +54,7 @@ default template, to the very end, the ready to be used app.
 There is no any description of the plan itself, of the way to get the **ER**.
 
 #### Solution
-There are always lots of opportunities for the improvement. But there two 
+There are always lots of opportunities for the improvement. But there are two 
 key points that shouldn't be missed in order to make it really efficient:
 - Collecting and handling the issues
 - Prioritizing of the collected issues  
@@ -85,3 +85,128 @@ User Control Panel
 - CMS pages
 - GAMES page
 - GAME page
+
+[NB!] 
+1. To setup styles due to the styleguide:
+- variables (colors, text-colors)
+- controls ( buttons )
+- update icon-font
+- `.content`
+
+### Modules  
+- Header, Aside, Navigation, Notification Center, Auth panel,
+User Control Panel
+
+These modules of the app have strong bidirectional relations. However, we 
+can distinguish and sort out the entities that are connected by these 
+relations. 
+Due to the design style guide we have the following parts of the layout:
+- Header ( Top Bar )
+- Aside ( Sidebar )
+  - bar-controller [module api]
+- Panel ( Mobile menu )
+- Navigation ( `left-header-menu`, `top-menu`, any list with nav links)
+- Auth panel
+- Main
+- Footer
+- Search
+  - controller(button with icon) [module api]
+  - modal content
+  - revealed input (f.e. in Header or Main)
+- Sign Up
+  - controller(button) [module api]
+  - model content
+  - update `config/app/default/default.json` with fields
+- Player Info 
+  - Player info and level status [edge cases: '0 level/points', 'MAX level/points']
+  - 
+
+
+### Requirements:
+- `Component` - a template for the `core-react` container.  
+**Example:**  
+```
+<Components.PlayerLevel templateName="user-info" className={`${mainClass}__player-level`} />`  
+```
+
+Component: `src/components/atoms/PlayerLevel/user-info.view.tsx` 
+
+- Do NOT call `organisms` (modules) and `atoms` (components) within the same name.
+
+
+
+- Styles should be differentiated between different entities 
+
+**Issue example:**
+`Icon button`, wrapped with `Button` HTML Element to provide proper 
+behaviour logic and actual HTML `Button` element expectedly have
+different styles   
+[src]: `bar-controller.view.tsx`  
+```
+<Components.Button
+  templateName="text-button"
+  className={`${mainClass}__close-button`}
+  onClick={closeModal(BAR_ID)}
+>
+    <Components.Icon className={`${mainClass}__close-icon`} name="burger" />
+</Components.Button>
+```
+    
+
+
+- All icons should be treated as React.Elements
+  - Easily customized and injected into the layout
+**Issue example:**
+![](../../../../../../../var/folders/v6/tw8k8_9n2qd87zyw1_gbtlrw0000gn/T/TemporaryItems/NSIRD_screencaptureui_dHJnfn/Screen Shot 2022-06-05 at 15.34.40.png)  
+
+Sports icon is used in sidebar as `Image` and as `font-icon` in Panel.
+**Issue definition** Duplicated sources of the image shape content and styles.
+
+
+- All components should inherit following values:
+  - color
+  - font-size  
+
+
+- All containers for modules should be presented: 
+  - Search-controller
+
+**Issue example:**  
+[Task](https://jira.softswiss.net/browse/PTF-714)
+[Design](https://www.figma.com/file/grWNVFawlkzP7SSr8KE8O8/Winning-(softswiss)?node-id=198%3A2219)
+
+In order to toggle the `Aside` module closed/opened state we should switch the `Link` HTML element to the `Button`.
+
+The following design expects the same `Search-controller` template to be used but 
+but the logic related to the state change in template is described outside and 
+duplicated.
+
+
+### Benefits
+[Lots of custom]
+- We are able to define and distinguish every custom composition requirement on a project planning stage.
+- Most of the custom solutions of component's logic and structure are replaced with a predefined **template** 
+that require customization of the **appearance** but not the **behaviour**.
+
+
+### Notes
+- Design  
+  - We do not have a `Username` property in codebase.
+- Naming  
+  - We should develop system of names for every level of product development  
+
+
+
+### Suggestions  
+
+#### Naming
+- Layout (general terms):
+    - *Header*
+    - *Aside* - block of the layout on left or right of the content
+    - *Main*
+    - *Footer*
+
+
+- Classes, templates:
+    - "bar" --> "sidebar"
+    - "panel" --> "bottom-bar"
